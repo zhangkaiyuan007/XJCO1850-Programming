@@ -1,0 +1,5 @@
+- Keeps a detailed history of changes, so we can review, compare, or revert to earlier versions.
+- Enables multiple people to work on the same project without overwriting each other’s work.
+- if files are lost or corrupted, we can restore previous versions.
+- Allows we to create separate branches to test new features or ideas without affecting the main project.
+- Provides tools to identify, manage, and resolve conflicting edits.
