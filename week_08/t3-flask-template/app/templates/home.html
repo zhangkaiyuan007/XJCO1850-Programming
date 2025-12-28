@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Store Sales Analyser</h1>
+        <p class="lead">Upload your sales data CSV to visualize product popularity.</p>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 mb-5">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label font-weight-bold">Select Sales CSV File</label>
+                        <input class="form-control" type="file" name="file" id="file" accept=".csv" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Upload and Analyse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if graph_url %}
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="card shadow-sm p-3">
+                <h3>Product Popularity Chart</h3>
+                <img src="data:image/png;base64,{{ graph_url }}" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if table_html %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow-sm p-3">
+                <h3 class="mb-3">Detailed Sales Data</h3>
+                <div class="table-responsive">
+                    {{ table_html | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
