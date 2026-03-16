@@ -3,5 +3,31 @@
 
 <h1>View Collection</h1>
 
+{% if movies %}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Director(s)</th>
+        <th>Genres</th>
+        <th>Year</th>
+        <th></th>
+    </tr>
+    {% for each in movies %}
+    <tr>
+        <td>{{each[1]}}</td>
+        <td>{{each[7]}}</td>
+        <td>{{each[6]}}</td>
+        <td>{{each[5]}}</td>
+        <td>
+            <a href="{{ url_for('movie', id=each[0]|int) }}">
+                <button>View Details</button>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Your collection is empty.</p>
+{% endif %}
 
 {% endblock %}

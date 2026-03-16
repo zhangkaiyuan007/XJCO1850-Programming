@@ -55,12 +55,14 @@ class Deck:
     # NEEDS COMPLETING
     def shuffle(self):
         ''' shuffle the list in place '''
-        pass
+        random.shuffle(self.deck)
 
     # NEEDS COMPLETING
     def deal(self):
         ''' return the top item from the deck & remove'''
-        pass
+        if not self.deck:
+            return None
+        return self.deck.pop()
 
     def __len__(self):
         return len(self.deck)

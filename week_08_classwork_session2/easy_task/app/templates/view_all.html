@@ -18,7 +18,7 @@
         <td>{{each[6]}}</td>
         <td>{{each[5]}}</td>
         <td>
-            <a href="">
+            <a href="{{ url_for('movie', id=each[0]|int) }}">
                 <button>View Details</button>
             </a> 
         </td>

@@ -31,18 +31,41 @@ def index():
 def all_movies():
     ''' Task 1 - you should edit this to render the correct template. '''
     movies = read_movies()
-    return "All Movies"
+    return render_template("view_all.html", title="Movie Database - All Movies", movies=movies)
 
 @app.route('/my_collection')
 def my_collection():
     movies = read_movies()
-    return "My Collection"
+    collected = []
+    for movie in movies:
+        try:
+            movie_id = int(movie[0])
+        except (ValueError, IndexError):
+            continue
+        if movie_id in collection:
+            collected.append(movie)
+    return render_template("collection.html", title="Movie Database - My Collection", movies=collected)
 
 @app.route("/movie/<int:id>")
 def movie(id):
-    return f"View movie id: {id}"
+    movies = read_movies()
+    selected = None
+    for movie in movies:
+        try:
+            movie_id = int(movie[0])
+        except (ValueError, IndexError):
+            continue
+        if movie_id == id:
+            selected = movie
+            break
+    if not selected:
+        return f"Movie id {id} not found."
+    in_collection = id in collection
+    return render_template("movie.html", title=f"Movie Database - {selected[1]}", movie=selected, in_collection=in_collection)
 
 
 @app.route('/add/<int:id>')
 def add(id):
-    return f"Add movie id {id}"
+    if id not in collection:
+        collection.append(id)
+    return redirect(url_for("movie", id=id))

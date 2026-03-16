@@ -15,25 +15,70 @@ def average_bar_chart(data):
     '''
     Complete this code to produce a bar chart of the total of each 'hours per day' column
     '''
-    pass
+    hour_cols = [c for c in data.columns if c.endswith("_Hours_Per_Day")]
+    totals = data[hour_cols].sum()
+    plt.figure(figsize=(10, 6))
+    plt.bar(totals.index, totals.values)
+    plt.title("Total Hours Per Day by Activity")
+    plt.xlabel("Activity")
+    plt.ylabel("Total Hours")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.show()
 
 def hours_histogram(data, column_name):
     '''
     Complete this code so that it can display a histogram of any given 'hours per day' column
     '''
-    pass
+    if column_name not in data.columns:
+        print(f"Column '{column_name}' not found.")
+        return
+    plt.figure(figsize=(8, 5))
+    plt.hist(data[column_name], bins=10, edgecolor="black")
+    plt.title(f"Distribution of {column_name}")
+    plt.xlabel(column_name)
+    plt.ylabel("Count")
+    plt.tight_layout()
+    plt.show()
 
 def hours_pie_chart(data, student_id):
     '''
     Complete this code so that it produces a pie chart of any given student's hours per day - this should be selected by student ID (the first column)
     '''
-    pass
+    if student_id < 1 or student_id > len(data):
+        print("Invalid student ID.")
+        return
+    hour_cols = [c for c in data.columns if c.endswith("_Hours_Per_Day")]
+    row = data.iloc[student_id - 1]
+    labels = [c.replace("_Hours_Per_Day", "").replace("_", " ") for c in hour_cols]
+    values = row[hour_cols].values
+    plt.figure(figsize=(7, 7))
+    plt.pie(values, labels=labels, autopct="%1.1f%%", startangle=90)
+    plt.title(f"Student {student_id} Hours Breakdown")
+    plt.tight_layout()
+    plt.show()
 
 def total_hours_per_stress_level(data, stress_level):
     '''
     Complete this code to create a stacked bar chart showing a breakdown of the total hours worked by students, grouped by their reported stress level.
     '''
-    pass
+    hour_cols = [c for c in data.columns if c.endswith("_Hours_Per_Day")]
+    subset = data[data["Stress_Level"] == stress_level]
+    if subset.empty:
+        print(f"No data for stress level '{stress_level}'.")
+        return
+    totals = subset[hour_cols].sum()
+    plt.figure(figsize=(8, 5))
+    bottom = 0
+    for col in hour_cols:
+        plt.bar(stress_level, totals[col], bottom=bottom, label=col.replace("_Hours_Per_Day", "").replace("_", " "))
+        bottom += totals[col]
+    plt.title(f"Total Hours by Activity for {stress_level} Stress Level")
+    plt.xlabel("Stress Level")
+    plt.ylabel("Total Hours")
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 
 def display_menu():
     print("Student Lifestyle Data Analysis")

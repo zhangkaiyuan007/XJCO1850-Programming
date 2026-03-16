@@ -3,4 +3,19 @@
 
 <h1>{{ movie[1] }}</h1>
 
+<p><strong>Year:</strong> {{ movie[5] }}</p>
+<p><strong>IMDb Rating:</strong> {{ movie[3] }}</p>
+<p><strong>Runtime:</strong> {{ movie[4] }} mins</p>
+<p><strong>Genres:</strong> {{ movie[6] }}</p>
+<p><strong>Director(s):</strong> {{ movie[7] }}</p>
+<p><a href="{{ movie[2] }}">IMDb Page</a></p>
+
+{% if in_collection %}
+<p>This movie is in your collection.</p>
+{% else %}
+<a href="{{ url_for('add', id=movie[0]|int) }}">
+    <button>Add to Collection</button>
+</a>
+{% endif %}
+
 {% endblock %}

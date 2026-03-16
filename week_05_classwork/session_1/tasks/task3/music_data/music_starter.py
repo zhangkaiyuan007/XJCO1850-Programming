@@ -33,7 +33,7 @@ def load_music_data():
                     month_year = row[0].split("-")
                     if len(month_year) == 2:
                         month = month_year[0]
-                        year = 0  # TODO: Convert month_year[1] to int
+                        year = int(month_year[1])
                     else:
                         month = "Unknown"
                         year = 0
@@ -42,13 +42,20 @@ def load_music_data():
                     song = {
                         "month": month,
                         "year": year,
-                        "position": 0,      # TODO: Convert row[1] to int
-                        "artist": "",       # TODO: Set to row[2]
-                        "song": "",         # TODO: Set to row[3]
-                        "revenue": 0.0,     # TODO: Convert row[4] to float (handle "-" and empty values)
-                        "us_chart": None,   # TODO: Convert row[5] to int if not "-", else None
-                        "uk_chart": None    # TODO: Convert row[6] to int if not "-", else None
+                        "position": int(row[1]),
+                        "artist": row[2],
+                        "song": row[3],
+                        "revenue": 0.0,
+                        "us_chart": None,
+                        "uk_chart": None
                     }
+                    revenue_raw = row[4].strip()
+                    if revenue_raw not in ("", "-"):
+                        song["revenue"] = float(revenue_raw)
+                    us_raw = row[5].strip()
+                    uk_raw = row[6].strip()
+                    song["us_chart"] = int(us_raw) if us_raw not in ("", "-") else None
+                    song["uk_chart"] = int(uk_raw) if uk_raw not in ("", "-") else None
                     music_data.append(song)
                     
                 except (ValueError, IndexError):
@@ -67,7 +74,8 @@ def search_by_artist():
     for song in music_data:
         # TODO: Check if artist_name appears in song["artist"] (case-insensitive)
         # Hint: Use .lower() and 'in' operator
-        pass
+        if artist_name in song["artist"].lower():
+            matches.append(song)
     
     if matches:
         print(f"\nFound {len(matches)} songs by artists matching '{artist_name}':")
@@ -77,7 +85,10 @@ def search_by_artist():
         for i in range(len(matches)):
             for j in range(len(matches) - 1 - i):
                 # TODO: Sort by year (newer first), then by position (lower number = better)
-                pass
+                a = matches[j]
+                b = matches[j + 1]
+                if (a["year"] < b["year"]) or (a["year"] == b["year"] and a["position"] > b["position"]):
+                    matches[j], matches[j + 1] = matches[j + 1], matches[j]
         
         # TODO: Display results (limit to first 15)
         for i, song in enumerate(matches[:15]):
@@ -105,7 +116,8 @@ def songs_by_year():
     year_songs = []
     for song in music_data:
         # TODO: Check if song["year"] matches the requested year
-        pass
+        if song["year"] == year:
+            year_songs.append(song)
     
     if year_songs:
         print(f"\nFound {len(year_songs)} songs from {year}")
@@ -115,8 +127,11 @@ def songs_by_year():
             min_index = i
             for j in range(i + 1, len(year_songs)):
                 # TODO: Find song with better (lower) position
-                pass
+                if year_songs[j]["position"] < year_songs[min_index]["position"]:
+                    min_index = j
             # TODO: Swap songs
+            if min_index != i:
+                year_songs[i], year_songs[min_index] = year_songs[min_index], year_songs[i]
         
         print(f"Top 20 songs from {year}:")
         # TODO: Display top 20 songs
@@ -135,7 +150,8 @@ def highest_revenue_songs():
     revenue_songs = []
     for song in music_data:
         # TODO: Only include songs with revenue > 0
-        pass
+        if song["revenue"] > 0:
+            revenue_songs.append(song)
     
     if not revenue_songs:
         print("No revenue data available!")
@@ -146,8 +162,11 @@ def highest_revenue_songs():
         max_index = i
         for j in range(i + 1, len(revenue_songs)):
             # TODO: Find song with higher revenue
-            pass
+            if revenue_songs[j]["revenue"] > revenue_songs[max_index]["revenue"]:
+                max_index = j
         # TODO: Swap songs
+        if max_index != i:
+            revenue_songs[i], revenue_songs[max_index] = revenue_songs[max_index], revenue_songs[i]
     
     print(f"\nTop 20 Highest Revenue Songs:")
     # TODO: Display top 20 revenue songs
@@ -163,7 +182,8 @@ def artist_analysis():
     artist_songs = []
     for song in music_data:
         # TODO: Check if artist_name appears in song["artist"] (case-insensitive)
-        pass
+        if artist_name in song["artist"].lower():
+            artist_songs.append(song)
     
     if not artist_songs:
         print(f"No songs found for artist matching '{artist_name}'")
@@ -171,25 +191,34 @@ def artist_analysis():
     
     # TODO: Calculate statistics
     total_songs = len(artist_songs)
-    total_revenue = 0  # TODO: Sum up revenue from all songs
+    total_revenue = 0
+    for song in artist_songs:
+        total_revenue += song["revenue"]
     
     # TODO: Find best chart position
     best_position = 50  # Start with worst possible
     for song in artist_songs:
         # TODO: Update best_position if we find a better one
-        pass
+        if song["position"] < best_position:
+            best_position = song["position"]
     
     # TODO: Count years active
     years = []
     for song in artist_songs:
         # TODO: Add year to years list if not already present
-        pass
+        if song["year"] not in years:
+            years.append(song["year"])
     
     print(f"\n--- Artist Analysis: {artist_songs[0]['artist']} ---")
     print(f"Total songs in charts: {total_songs}")
     print(f"Best chart position: #{best_position}")
     print(f"Total revenue: ${total_revenue:.0f}k")
     # TODO: Display year range and average revenue
+    earliest = min(years)
+    latest = max(years)
+    avg_revenue = total_revenue / total_songs if total_songs else 0
+    print(f"Years active: {earliest}-{latest}")
+    print(f"Average revenue per song: ${avg_revenue:.0f}k")
 
 def export_year_data():
     """Export all songs from a specific year to a new CSV file"""
@@ -206,7 +235,8 @@ def export_year_data():
     year_songs = []
     for song in music_data:
         # TODO: Check if song year matches
-        pass
+        if song["year"] == year:
+            year_songs.append(song)
     
     if not year_songs:
         print(f"No songs found from {year}")
@@ -218,7 +248,12 @@ def export_year_data():
         with open(filename, "w") as f:
             # TODO: Write header
             # TODO: Write each song's data
-            pass
+            f.write("month,year,position,artist,song,revenue,us_chart,uk_chart\n")
+            for song in year_songs:
+                us_val = "-" if song["us_chart"] is None else str(song["us_chart"])
+                uk_val = "-" if song["uk_chart"] is None else str(song["uk_chart"])
+                line = f"{song['month']},{song['year']},{song['position']},{song['artist']},{song['song']},{song['revenue']},{us_val},{uk_val}"
+                f.write(line + "\n")
         
         print(f"Exported {len(year_songs)} songs from {year} to {filename}")
         

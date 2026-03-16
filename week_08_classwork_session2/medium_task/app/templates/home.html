@@ -4,6 +4,7 @@
  <h1>Our Products</h1>
 
 <div class="grid-container">
+    {% for product in products %}
         <div class="card" data-stock="{{ product[3] }}">
             <img src="{{ url_for('static', filename='images/' + product[4]) }}" alt="{{ product[1] }}">
             <h3>{{ product[1] }}</h3>
@@ -15,6 +16,7 @@
             <div class="overlay">Out of Stock</div>
             {% endif %}
         </div>
+    {% endfor %}
 </div>
 
  {% endblock %}

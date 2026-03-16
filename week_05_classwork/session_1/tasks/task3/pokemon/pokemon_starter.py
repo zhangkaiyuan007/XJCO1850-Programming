@@ -30,19 +30,19 @@ def load_pokemon_data():
                 try:
                     # TODO: Create pokemon dictionary with converted data types
                     pokemon = {
-                        "number": 0,        # TODO: Convert row[0] to int
-                        "name": "",         # TODO: Set to row[1]
-                        "type1": "",        # TODO: Set to row[2]
-                        "type2": None,      # TODO: Set to row[3] if not empty, else None
-                        "total": 0,         # TODO: Convert row[4] to int
-                        "hp": 0,            # TODO: Convert row[5] to int
-                        "attack": 0,        # TODO: Convert row[6] to int
-                        "defense": 0,       # TODO: Convert row[7] to int
-                        "sp_attack": 0,     # TODO: Convert row[8] to int
-                        "sp_defense": 0,    # TODO: Convert row[9] to int
-                        "speed": 0,         # TODO: Convert row[10] to int
-                        "generation": 0,    # TODO: Convert row[11] to int
-                        "legendary": False  # TODO: Convert row[12] to boolean (check if == 'True')
+                        "number": int(row[0]),
+                        "name": row[1],
+                        "type1": row[2],
+                        "type2": row[3] if row[3].strip() else None,
+                        "total": int(row[4]),
+                        "hp": int(row[5]),
+                        "attack": int(row[6]),
+                        "defense": int(row[7]),
+                        "sp_attack": int(row[8]),
+                        "sp_defense": int(row[9]),
+                        "speed": int(row[10]),
+                        "generation": int(row[11]),
+                        "legendary": row[12].strip() == "True"
                     }
                     pokemon_data.append(pokemon)
                 except (ValueError, IndexError):
@@ -74,6 +74,8 @@ def display_pokemon(pokemon):
     # Hint: Check if pokemon['type2'] is None
     type_str = pokemon['type1']
     # TODO: Add second type if it exists
+    if pokemon["type2"]:
+        type_str = f"{type_str} / {pokemon['type2']}"
     print(f"Type: {type_str}")
     
     print(f"Generation: {pokemon['generation']}")
@@ -83,6 +85,12 @@ def display_pokemon(pokemon):
     # TODO: Display all stats nicely
     print(f"  HP:        {pokemon['hp']}")
     # TODO: Add remaining stats (attack, defense, sp_attack, sp_defense, speed, total)
+    print(f"  Attack:    {pokemon['attack']}")
+    print(f"  Defense:   {pokemon['defense']}")
+    print(f"  Sp. Atk:   {pokemon['sp_attack']}")
+    print(f"  Sp. Def:   {pokemon['sp_defense']}")
+    print(f"  Speed:     {pokemon['speed']}")
+    print(f"  Total:     {pokemon['total']}")
 
 def pokemon_by_type():
     """Find all Pokemon of a specific type"""
@@ -93,7 +101,8 @@ def pokemon_by_type():
     for pokemon in pokemon_data:
         # TODO: Check both type1 and type2 fields
         # Hint: pokemon['type1'] == ptype or pokemon['type2'] == ptype
-        pass
+        if pokemon["type1"] == ptype or pokemon["type2"] == ptype:
+            matches.append(pokemon)
     
     if matches:
         print(f"\nFound {len(matches)} {ptype}-type Pokemon:")
@@ -103,7 +112,8 @@ def pokemon_by_type():
         for i in range(len(matches)):
             for j in range(len(matches) - 1 - i):
                 # TODO: Compare and swap if needed
-                pass
+                if matches[j]["name"].lower() > matches[j + 1]["name"].lower():
+                    matches[j], matches[j + 1] = matches[j + 1], matches[j]
         
         # TODO: Display results (limit to first 15)
         for i, pokemon in enumerate(matches[:15]):
@@ -140,11 +150,18 @@ def strongest_pokemon():
         for pokemon in pokemon_data:
             # TODO: Check if this pokemon has higher stat
             # TODO: If higher, start new list; if equal, add to list
-            pass
+            value = pokemon[stat_key]
+            if value > max_value:
+                max_value = value
+                strongest = [pokemon]
+            elif value == max_value:
+                strongest.append(pokemon)
         
         # TODO: Display results
         print(f"\n{stat_name}: {max_value}")
         # TODO: Print names of strongest Pokemon
+        names = ", ".join(p["name"] for p in strongest)
+        print(f"  {names}")
 
 def type_analysis():
     """Analyse average stats by Pokemon type"""
@@ -154,7 +171,8 @@ def type_analysis():
     type_pokemon = []
     for pokemon in pokemon_data:
         # TODO: Check if pokemon matches the type
-        pass
+        if pokemon["type1"] == ptype or pokemon["type2"] == ptype:
+            type_pokemon.append(pokemon)
     
     if not type_pokemon:
         print(f"No {ptype}-type Pokemon found!")
@@ -169,12 +187,19 @@ def type_analysis():
     
     for pokemon in type_pokemon:
         # TODO: Add up all the stats
-        pass
+        total_hp += pokemon["hp"]
+        total_attack += pokemon["attack"]
+        total_defense += pokemon["defense"]
+        total_speed += pokemon["speed"]
     
     print(f"\n--- {ptype}-type Pokemon Analysis ---")
     print(f"Number of {ptype}-type Pokemon: {count}")
     print(f"Average Stats:")
     # TODO: Display averages (divide totals by count)
+    print(f"  HP:      {total_hp / count:.1f}")
+    print(f"  Attack:  {total_attack / count:.1f}")
+    print(f"  Defense: {total_defense / count:.1f}")
+    print(f"  Speed:   {total_speed / count:.1f}")
 
 def simple_battle():
     """Simple Pokemon battle based on total stats"""
@@ -184,6 +209,10 @@ def simple_battle():
     name1 = input("Enter first Pokemon name: ").strip().lower()
     pokemon1 = None
     # TODO: Search for pokemon1
+    for pokemon in pokemon_data:
+        if pokemon["name"].lower() == name1:
+            pokemon1 = pokemon
+            break
     
     if not pokemon1:
         print(f"Pokemon '{name1}' not found!")
@@ -193,6 +222,10 @@ def simple_battle():
     name2 = input("Enter second Pokemon name: ").strip().lower()
     pokemon2 = None
     # TODO: Search for pokemon2
+    for pokemon in pokemon_data:
+        if pokemon["name"].lower() == name2:
+            pokemon2 = pokemon
+            break
     
     if not pokemon2:
         print(f"Pokemon '{name2}' not found!")
@@ -202,6 +235,14 @@ def simple_battle():
     print(f"\nBattle: {pokemon1['name']} vs {pokemon2['name']}")
     # TODO: Display total stats for both
     # TODO: Determine winner and display result
+    print(f"{pokemon1['name']} total: {pokemon1['total']}")
+    print(f"{pokemon2['name']} total: {pokemon2['total']}")
+    if pokemon1["total"] > pokemon2["total"]:
+        print(f"Winner: {pokemon1['name']}!")
+    elif pokemon2["total"] > pokemon1["total"]:
+        print(f"Winner: {pokemon2['name']}!")
+    else:
+        print("It's a tie!")
 
 def main_menu():
     """Display menu and handle user choices"""

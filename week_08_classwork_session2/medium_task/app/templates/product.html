@@ -15,7 +15,11 @@
             <h1>{{ product[1] }}</h1>
             <p class="price">{{ product[2] }}</p>
             <p class="stock">Stock: {{ product[3] }}</p>
-            <button class="add-to-cart">Buy Now</button>
+            {% if product[3]|int > 0 %}
+            <a href="{{ url_for('order', id=product[0]|int) }}"><button class="add-to-cart">Buy Now</button></a>
+            {% else %}
+            <p>Out of stock.</p>
+            {% endif %}
         </div>
     </div>
 </div>

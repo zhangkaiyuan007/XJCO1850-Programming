@@ -11,10 +11,10 @@ Given the following relations (presented in tables), what is the degree and card
   |CR74|Mike|Ritchie|01475-392178|House|750|mritchie01@yahoo.co.uk|
   |CR62|Mary|Tregear|01224-196720|Flat|600|maryt@htomail.co.uk|
 
-  1. number of tuples: 
-  2. number of attributes: 
-  3. degree of relation: 
-  4. cardinatity of relation: 
+  1. number of tuples: 4
+  2. number of attributes: 4
+  3. degree of relation: 4
+  4. cardinatity of relation: 4
 
 
 * PropertyForRent relation
@@ -28,10 +28,10 @@ Given the following relations (presented in tables), what is the degree and card
   | PG21|18 Dale Rd|Glasgow|G12|House|5|600|CO87|SG37|B003| 
   | PG16|5 Novar Dr|Glasgow|G12 9AX|Flat|4|450|CO93|SG14|B003|
 
-  1. number of tuples: 
-  2. number of attributes: 
-  3. degree of relation: 
-  4. cardinatity of relation:
+  1. number of tuples: 6
+  2. number of attributes: 10
+  3. degree of relation: 10
+  4. cardinatity of relation: 6
  
 
 * PrivateOwner relation
@@ -42,8 +42,8 @@ Given the following relations (presented in tables), what is the degree and card
   |CO40|Tina|Murphy|63 Well St, Glasgow G42 ABX|0141-943-1728|tinam@hotmail.com|tinamurphy|
   |CO93|Tony|Shaw|12 Park Pl, Glasgow G4 0QR|0141-225-7025|tony.shaw@ark.com|tonyshaw|
 
-  1. degree of relation: 
-  2. cardinatity of relation:
+  1. degree of relation: 7
+  2. cardinatity of relation: 4
  
 * Viewing relation
   
@@ -55,8 +55,8 @@ Given the following relations (presented in tables), what is the degree and card
   |CR62|PA14|14-May-13|no dining room|
   | CR56|PG36|28-Apr-13| |
 
-  1. degree of relation: 
-  2. cardinatity of relation:
+  1. degree of relation: 4
+  2. cardinatity of relation: 5
 
 * Product relation
 
@@ -68,5 +68,5 @@ Given the following relations (presented in tables), what is the degree and card
   |105945 | Headphones | Audio-Technica ATH |
   |666721 | Bluetooth Speakers | Jamo DS3 |
 
-  1. degree of relation: 
-  2. cardinatity of relation:
+  1. degree of relation: 3
+  2. cardinatity of relation: 5

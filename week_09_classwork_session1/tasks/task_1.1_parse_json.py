@@ -24,5 +24,13 @@ json_string = """
 """
 
 # TODO: Parse the JSON string into a Python dictionary using json.loads()
+data = json.loads(json_string)
 
 # TODO: Access values such as name, email, and city from the parsed dictionary
+name = data["name"]
+email = data["email"]
+city = data["address"]["city"]
+
+print(f"Name: {name}")
+print(f"Email: {email}")
+print(f"City: {city}")

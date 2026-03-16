@@ -28,7 +28,19 @@ def load_library():
         if line:
             # TODO: Parse "Title by Author (Year) - Genre" format
             # Create dictionary and append to library list
-            pass
+            try:
+                title_part, rest = line.split(" by ", 1)
+                author_part, rest = rest.split(" (", 1)
+                year_part, genre_part = rest.split(") - ", 1)
+                book = {
+                    "title": title_part.strip(),
+                    "author": author_part.strip(),
+                    "year": int(year_part.strip()),
+                    "genre": genre_part.strip(),
+                }
+                library.append(book)
+            except ValueError:
+                print(f"Skipping invalid line: {line}")
     
     print(f"Loaded {len(library)} books")
 
@@ -41,7 +53,8 @@ def save_library():
             # TODO: Write each book in format: "Title by Author (Year) - Genre"
             for book in library:
                 # TODO: Format book dictionary into string and write to file
-                pass
+                line = f"{book['title']} by {book['author']} ({book['year']}) - {book['genre']}"
+                f.write(line + "\n")
         print("Library saved successfully!")
     except Exception as e:
         print(f"Error saving library: {e}")
@@ -55,13 +68,23 @@ def add_book():
     author = input("Enter author name: ").strip()
     
     # TODO: Get year with error checking (handle invalid input)
-    year = 0  # Replace with proper input handling
+    while True:
+        year_input = input("Enter publication year: ").strip()
+        try:
+            year = int(year_input)
+            break
+        except ValueError:
+            print("Invalid year. Please enter a number.")
     
     genre = input("Enter genre: ").strip()
     
     # TODO: Create book dictionary and add to library
     book = {
         # TODO: Fill in dictionary keys and values
+        "title": title,
+        "author": author,
+        "year": year,
+        "genre": genre,
     }
     
     library.append(book)
@@ -77,6 +100,13 @@ def display_library():
     
     # TODO: Sort books by title (use bubble sort or selection sort - no lambda!)
     # Hint: Compare book["title"].lower() for case-insensitive sorting
+    for i in range(len(library)):
+        min_idx = i
+        for j in range(i + 1, len(library)):
+            if library[j]["title"].lower() < library[min_idx]["title"].lower():
+                min_idx = j
+        if min_idx != i:
+            library[i], library[min_idx] = library[min_idx], library[i]
     
     # TODO: Display each book in a nice format
     for i, book in enumerate(library, 1):
@@ -98,12 +128,15 @@ def search_books():
     for book in library:
         # TODO: Check if search term appears in title or author (case-insensitive)
         # Hint: Use .lower() and 'in' operator
-        pass
+        if search_term in book["title"].lower() or search_term in book["author"].lower():
+            matches.append(book)
     
     # TODO: Display results
     if matches:
         print(f"\nFound {len(matches)} matching book(s):")
         # TODO: Display matching books
+        for i, book in enumerate(matches, 1):
+            print(f"{i:2d}. {book['title']} by {book['author']} ({book['year']}) - {book['genre']}")
     else:
         print("No books found matching your search.")
 
@@ -119,15 +152,22 @@ def display_stats():
     # TODO: Count books by genre
     # Hint: Use a dictionary to count occurrences
     genre_counts = {}
+    for book in library:
+        genre = book["genre"]
+        genre_counts[genre] = genre_counts.get(genre, 0) + 1
     
     # TODO: Find oldest and newest books
     # Hint: Compare book["year"] values
+    oldest_year = min(book["year"] for book in library)
+    newest_year = max(book["year"] for book in library)
     
     print("\nBooks by genre:")
     # TODO: Display genre counts
+    for genre, count in genre_counts.items():
+        print(f"{genre}: {count}")
     
-    print(f"\nOldest book: {0}")  # TODO: Replace with actual oldest year
-    print(f"Newest book: {0}")   # TODO: Replace with actual newest year
+    print(f"\nOldest book: {oldest_year}")
+    print(f"Newest book: {newest_year}")
 
 def main_menu():
     """Display main menu and handle user choices"""

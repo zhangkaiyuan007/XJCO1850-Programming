@@ -15,5 +15,9 @@ data = {
 }
 
 # TODO: Modify the "isActive" field to False and add "viewer" to the roles list
+data["isActive"] = False
+data["roles"].append("viewer")
 
 # TODO: Convert the updated data back to a JSON string using json.dumps() and print it
+json_output = json.dumps(data, indent=2)
+print(json_output)

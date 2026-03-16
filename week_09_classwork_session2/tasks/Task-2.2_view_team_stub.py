@@ -1,7 +1,7 @@
-"""
+﻿"""
 Exercise 2.2: View the Current Team (Stub)
 - Implement a method to view the current team.
-- Display each Pokémon's name, types, and image URL.
+- Display each Pokemon's name, types, and image URL.
 """
 
 import httpx
@@ -12,21 +12,36 @@ class Team:
         self.members = []
     
     def add_pokemon(self, name):
-        """Add a Pokémon to the team."""
-        # (Implementation from Exercise 2.1)
-        pass  # Remove this when implementing
+        """Add a Pokemon to the team."""
+        if len(self.members) >= 6:
+            print("Cannot add more Pokemon. The team is already full (6 Pokemon max)!")
+            return
+        if name.lower() in [pokemon['name'].lower() for pokemon in self.members]:
+            print(f"{name.capitalize()} is already in your team!")
+            return
+        url = f"https://pokeapi.co/api/v2/pokemon/{name.lower()}"
+        response = httpx.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            pokemon_info = {
+                'name': data['name'].capitalize(),
+                'types': [t['type']['name'] for t in data['types']],
+                'image_url': data['sprites']['front_default']
+            }
+            self.members.append(pokemon_info)
+            print(f"{pokemon_info['name']} has been added to your team.")
+        else:
+            print(f"Error: Pokemon '{name}' not found!")
     
     def view_team(self):
         """View the current team with details."""
-        # TODO: Check if the team is empty
-            # TODO: If empty, print a message indicating the team is empty
-        pass  # Remove this when implementing
-        
-        # TODO: Print the team members with their details
+        if not self.members:
+            print("Your team is empty.")
+            return
         print("Your Team:")
         for idx, pokemon in enumerate(self.members, 1):
-            # TODO: Extract and format the Pokémon's details
-            pass
+            types = ", ".join(pokemon["types"])
+            print(f"{idx}. {pokemon['name']} | Types: {types} | Image: {pokemon['image_url']}")
     
 # Example usage
 # team = Team()

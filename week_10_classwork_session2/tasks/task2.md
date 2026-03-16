@@ -6,8 +6,8 @@ For example, one of the advantages is backup and recovery in which database syst
 
 Advantages of database systems over file-based systems:
 
-1. 
-2. 
-3. 
-4. 
+1. Reduced data redundancy and inconsistency through centralized control.
+2. Better data integrity and validation using constraints and rules.
+3. Concurrency control so multiple users can safely read/write at once.
+4. Improved security via access controls, roles, and auditing.
 

@@ -23,6 +23,7 @@ For example a fitness tracking app, data to be collected are:
 
 Data to be collected for your chose system are:
 
-- 
-- 
-- 
+- Books: title, author, ISBN, category/genre, publication year, copy count, shelf/location.
+- Members: name, contact details, membership ID, join date, status (active/suspended).
+- Loans/returns: member ID, book ID, checkout date, due date, return date, fines.
+- Staff/audit: staff ID, actions (issue/return), timestamps for accountability.

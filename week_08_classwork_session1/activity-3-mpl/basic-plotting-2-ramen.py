@@ -19,37 +19,96 @@ def show_histogram_of_ramen_scores(data):
     '''
     Create a histogram to show the distribution of numbers of stars given to ramen.
     '''
-    pass
+    stars = pd.to_numeric(data["Stars"], errors="coerce").dropna()
+    plt.figure(figsize=(8, 5))
+    plt.hist(stars, bins=10, edgecolor="black")
+    plt.title("Ramen Star Ratings Distribution")
+    plt.xlabel("Stars")
+    plt.ylabel("Count")
+    plt.tight_layout()
+    plt.show()
 
 def show_bar_chart_stars_per_manufacturer(data):
     '''
     Create a bar chart showing the average rating per manufacturer
     '''
-    pass
+    df = data.copy()
+    df["Stars"] = pd.to_numeric(df["Stars"], errors="coerce")
+    avg = df.dropna(subset=["Stars"]).groupby("Brand")["Stars"].mean().sort_values(ascending=False)
+    top = avg.head(15)
+    plt.figure(figsize=(10, 6))
+    plt.bar(top.index, top.values)
+    plt.title("Top 15 Manufacturers by Average Stars")
+    plt.xlabel("Manufacturer")
+    plt.ylabel("Average Stars")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.show()
 
 def show_bar_chart_stars_per_country(data):
     '''
     Create a bar chart showing the average rating per country
     '''
-    pass
+    df = data.copy()
+    df["Stars"] = pd.to_numeric(df["Stars"], errors="coerce")
+    avg = df.dropna(subset=["Stars"]).groupby("Country")["Stars"].mean().sort_values(ascending=False)
+    plt.figure(figsize=(10, 6))
+    plt.bar(avg.index, avg.values)
+    plt.title("Average Stars per Country")
+    plt.xlabel("Country")
+    plt.ylabel("Average Stars")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.show()
 
 def find_best_per_country(data, country):
     '''
     Find and return the index of the row with the highest rating per country.
     If there are two with equal rating, you can return either.
     '''
-    pass
+    df = data.copy()
+    df["Stars"] = pd.to_numeric(df["Stars"], errors="coerce")
+    country_df = df[df["Country"] == country].dropna(subset=["Stars"])
+    if country_df.empty:
+        print(f"No data found for {country}")
+        return None
+    idx = country_df["Stars"].idxmax()
+    print(f"\nBest rated ramen in {country}:")
+    print_ramen_rating(df.loc[idx])
+    return idx
 
 def find_worst_per_country(data, country):
     '''
     Find and return the index of the row with the lowest rating per country.
     '''
-    pass
+    df = data.copy()
+    df["Stars"] = pd.to_numeric(df["Stars"], errors="coerce")
+    country_df = df[df["Country"] == country].dropna(subset=["Stars"])
+    if country_df.empty:
+        print(f"No data found for {country}")
+        return None
+    idx = country_df["Stars"].idxmin()
+    print(f"\nWorst rated ramen in {country}:")
+    print_ramen_rating(df.loc[idx])
+    return idx
 
 def show_piechart_of_manufacturers_by_country(data, country):
     '''
     Create a pie chart showing the percentage of each manufacturer in the country
     '''
+    country_df = data[data["Country"] == country]
+    if country_df.empty:
+        print(f"No data found for {country}")
+        return
+    counts = country_df["Brand"].value_counts()
+    top = counts.head(8)
+    if len(counts) > 8:
+        top["Other"] = counts.iloc[8:].sum()
+    plt.figure(figsize=(7, 7))
+    plt.pie(top.values, labels=top.index, autopct="%1.1f%%", startangle=90)
+    plt.title(f"Manufacturers in {country}")
+    plt.tight_layout()
+    plt.show()
 
 def print_ramen_rating(rating):
     '''
@@ -61,14 +120,25 @@ def print_ramen_rating(rating):
     Country of Origin:
     Stars:
     '''
-    pass
+    print(f"Name: {rating.get('Variety', '')}")
+    print(f"Type of ramen: {rating.get('Style', '')}")
+    print(f"Manufacturer: {rating.get('Brand', '')}")
+    print(f"Country of Origin: {rating.get('Country', '')}")
+    print(f"Stars: {rating.get('Stars', '')}")
 
 def show_top_ten(data):
     '''
     Select the top-ten ramen and print them out in order of lowest rating to highest
     You may want to call your print_ramen_rating() function for this.
     '''
-    pass
+    df = data.copy()
+    df["Stars"] = pd.to_numeric(df["Stars"], errors="coerce")
+    top = df.dropna(subset=["Stars"]).sort_values("Stars", ascending=False).head(10)
+    top = top.sort_values("Stars", ascending=True)
+    print("\n--- Top Ten Ramen (low to high) ---")
+    for _, row in top.iterrows():
+        print_ramen_rating(row)
+        print()
 
 def random_ramen_review(data):
     '''
@@ -78,7 +148,9 @@ def random_ramen_review(data):
         A graph showing where it is on the histogram (you can add a vertical line at a specific value)
         Anything else you think would be interesting!
     '''
-    pass
+    idx = random.randint(0, len(data) - 1)
+    print("\n--- Random Ramen Review ---")
+    print_ramen_rating(data.iloc[idx])
 
 
 def menu():
