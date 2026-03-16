@@ -1,0 +1,4 @@
+COMP1850, Programming, 75
+COMP1860, COmputer System & Architecture, 66
+COMP1870, Theoretical Foundation of Computer Science I, 80
+COMP2850, Software Engineering, 88

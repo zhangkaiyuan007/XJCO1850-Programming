@@ -1,0 +1,20 @@
+password.py:
+
+* Made password longer (to encourage good habits :-)
+* Added a SHA256 hash so they can see how passwords are often stored
+
+New scripts:
+
+These mostly demonstrate the use of various standard library modules.
+
+Use as many or as few as you like!
+
+cpuinfo.py: gets info on system CPU(s) (note: Linux only)
+meminfo.py: gets info on system memory usage (note: Linux only)
+osinfo.py: gets info on the environment, using the os module
+pathinfo.py: demo of filesystem path manipulation using the pathlib module
+copytree.py: copies a directory tree, using the shutil module
+xmas.py: calculates how many days until Christmas Day
+username.py: checks validity of a UoL username, using a regular expression
+wordcount.py: counts words in a file, even if it is gzipped
+ziplist.py: lists contents of a Zip archive

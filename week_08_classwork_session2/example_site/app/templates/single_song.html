@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<center>
+
+  <!-- This is a class provided by Bootstrap - Jumbotrons just have some nice built in formatting -->
+  <div class="jumbotron">
+    <h1 class="display-4">{{ song[1] }} by {{ song[4] }}</h1>
+    <hr class="my-4">
+    <!-- We only include the image if the API found one! Some will be wrong.. -->
+    {% if cover_url %}
+    <img src="{{ cover_url }}" width="40%" display="block" alt="Album cover for {{ song[3] }}">
+    {% endif %}
+    <hr class="my-4">
+    <p class="lead">Written by {{ song[5] }}, produced by {{ song[6] }} and released in {{ song[7] }}, {{ song[1] }}
+      appeared on the album {{ song[3] }}.</p>
+    <hr class="my-4">
+    <p>{{ song[2] }}</p>
+    {% if song[10] == "False" %}
+    <a href="{{ url_for('like_song', id=song[0]) }}">
+      <button>Like</button>
+    </a>
+    {% else %}
+    <a href="{{ url_for('like_song', id=song[0]) }}">
+      <button>Unlike</button>
+    </a>
+    {% endif %}
+  </div>
+
+</center>
+
+{% endblock %}

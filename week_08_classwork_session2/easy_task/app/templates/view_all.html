@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>View All</h1>
+
+<table>
+    
+    <tr>
+        <th>Title</th>
+        <th>Director(s)</th>
+        <th>Genres</th>
+        <th>Year</th>
+        <th> </th>
+    </tr>
+    {% for each in movies %}
+    <tr>
+        <td>{{each[1]}}</td>
+        <td>{{each[7]}}</td>
+        <td>{{each[6]}}</td>
+        <td>{{each[5]}}</td>
+        <td>
+            <a href="">
+                <button>View Details</button>
+            </a> 
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> All 500 Songs </h1>
+
+<table>
+    <tr>
+        <th>Number</th>
+        <th>Title</th>
+        <th>Artist(s)</th>
+        <th>Writer(s)</th>
+        <th>Release Month</th>
+        <th>Learn More</th>
+    </tr>
+
+
+    {% for each in songs %}
+
+        <tr>
+            <th scope="row">{{ each[0] }}</th>
+            <td>{{ each[1] }}</td>
+            <td>{{ each[4] }}</td>
+            <td>{{ each[5] }}</td>
+            <td>{{ each[7] }}</td>
+            <td>
+                <a href="{{ url_for('song', id=each[0]) }}">
+                    <button>View More</button>
+                </a>
+            </td>
+        </tr>
+    
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

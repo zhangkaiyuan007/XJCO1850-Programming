@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <!-- These are a handful of libraries/resources I like to include. -->
+
+    <!-- Bootstrap is a very useful css library which makes it easy to make your website look nice -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    
+    <!-- These are my own stylesheets and javascript files. -->
+    <!-- I use these to personalise my site, add colour and animation and anything else custom -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- This is a fontawesome kit which gives me basic access to some standard logos to use on my site -->
+    <link rel="stylesheet" href="https://kit.fontawesome.com/8b908522b3.css" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/8b908522b3.js" crossorigin="anonymous"></script>
+
+    <!-- This is the first bit of python in our JINJA - it checks if a title has been passed in and uses a placeholder if not. -->
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title> Top 500 Songs </title>
+    {% endif %}
+</head>
+
+<body>
+    <!-- Navbar generator: https://www.cssportal.com/css3-menu-generator/ -->
+    <nav id='menu'>
+        <input type='checkbox' id='responsive-menu'><label></label>
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/all_songs'>All Music</a></li>
+            <li><a href='/liked'>Liked Songs</a></li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        {% block content %} {% endblock %}
+    </div>
+</body>
+
+</html>

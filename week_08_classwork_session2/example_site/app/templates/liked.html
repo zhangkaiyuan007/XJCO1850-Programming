@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+ {% block content %}
+     <h1> Your Liked Songs </h1>
+
+     {% if liked|length > 0 %}
+
+    Implement your code here to print out a nice table :)
+
+     {% else %}
+
+     You haven't liked any songs yet...
+
+     {% endif %}
+
+
+
+ {% endblock %}
